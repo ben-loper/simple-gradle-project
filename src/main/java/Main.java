@@ -1,13 +1,17 @@
 import com.sun.tools.jdeprscan.CSV;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         try (Reader reader = new FileReader("C:\\Development\\reviews\\resources\\user-reviews.csv")) {
             //Iterable<CSVRecord> records = CSVFormat.RFC4180.withHeader("id", "username", "rating", "review_title", "review_body").parse(reader);
@@ -25,6 +29,15 @@ public class Main {
                 System.out.println("*********************************************************");
             }
         } catch (Exception e) {
+
+        }
+
+        Document doc = Jsoup.connect("http://en.wikipedia.org/").get();
+        System.out.println(doc.title());
+        Elements newsHeadlines = doc.select("#mp-itn b a");
+        for (Element headline : newsHeadlines) {
+            System.out.println(headline.attr("title"));
+            System.out.println(headline.absUrl("href"));
 
         }
     }
